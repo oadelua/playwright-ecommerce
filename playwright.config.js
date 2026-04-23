@@ -26,10 +26,9 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    
-   baseURL: 'https://practicesoftwaretesting.com',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL: 'https://practicesoftwaretesting.com',
+    testIdAttribute: 'data-test',
     trace: 'on-first-retry',
   },
 
