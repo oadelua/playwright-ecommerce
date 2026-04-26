@@ -42,6 +42,16 @@ test('verify user can sign up successfully', async ({ page }) => {
   await expect(page).toHaveURL('/account_created');
 });
 
+test('verify duplicate email registration is rejected', async ({ page }) => {
+  const signUpPage = new SignUpPage(page);
+
+  await signUpPage.navigate();
+  await signUpPage.signupName.fill('Cyber Guru');
+  await signUpPage.signupEmail.fill(process.env.LOGIN_EMAIL);
+  await signUpPage.signupButton.click();
+  await expect(page.getByText('Email Address already exist!')).toBeVisible();
+});
+
 test('verify user can log in successfully', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
@@ -54,6 +64,7 @@ test('verify user can log in successfully', async ({ page }) => {
   await expect(page.getByText(/Logged in as/)).toBeVisible();
 });
 
+
 test('verify login fails with invalid credentials', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
@@ -65,4 +76,13 @@ test('verify login fails with invalid credentials', async ({ page }) => {
 
   await expect(loginPage.errorMessage).toBeVisible();
   await expect(loginPage.errorMessage).toContainText('Your email or password is incorrect!');
+});
+
+test('verify login fields are required', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.navigate();
+
+  await expect(loginPage.loginEmail).toHaveAttribute('required', '');
+  await expect(loginPage.loginPassword).toHaveAttribute('required', '');
 });
