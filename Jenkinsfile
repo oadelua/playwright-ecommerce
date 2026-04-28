@@ -2,7 +2,10 @@ pipeline {
     agent any
     
     environment {
-        PATH = "/usr/local/bin:${env.PATH}"
+         PATH = "/usr/local/bin:${env.PATH}"
+    LOGIN_EMAIL = credentials('LOGIN_EMAIL')
+    LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
+    REGISTER_PASSWORD = credentials('REGISTER_PASSWORD')
     }
     
     stages {
