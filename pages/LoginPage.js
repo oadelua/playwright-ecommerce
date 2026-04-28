@@ -9,7 +9,7 @@ export class LoginPage {
   }
 
   async navigate() {
-    await this.signupLoginLink.click();
+     await this.page.goto('/login');
   }
 
   async login(email, password) {
