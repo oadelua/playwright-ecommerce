@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }) => {
   }
 });
 
-test('verify user can sign up successfully', async ({ page }) => {
+test('verify user can sign up successfully @smoke', async ({ page }) => {
   const email = `user${Date.now()}@maildrop.cc`;
   const signUpPage = new SignUpPage(page);
 
@@ -42,7 +42,7 @@ test('verify user can sign up successfully', async ({ page }) => {
   await expect(page).toHaveURL('/account_created');
 });
 
-test('verify duplicate email registration is rejected', async ({ page }) => {
+test('verify duplicate email registration is rejected @regression', async ({ page }) => {
   const signUpPage = new SignUpPage(page);
 
   await signUpPage.navigate();
@@ -52,7 +52,7 @@ test('verify duplicate email registration is rejected', async ({ page }) => {
   await expect(page.getByText('Email Address already exist!')).toBeVisible();
 });
 
-test('verify user can log in successfully', async ({ page }) => {
+test('verify user can log in successfully @smoke', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.navigate();
@@ -65,7 +65,7 @@ test('verify user can log in successfully', async ({ page }) => {
 });
 
 
-test('verify login fails with invalid credentials', async ({ page }) => {
+test('verify login fails with invalid credentials @regression', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.navigate();
@@ -78,7 +78,7 @@ test('verify login fails with invalid credentials', async ({ page }) => {
   await expect(loginPage.errorMessage).toContainText('Your email or password is incorrect!');
 });
 
-test('verify login fields are required', async ({ page }) => {
+test('verify login fields are required @regression', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.navigate();

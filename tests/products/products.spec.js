@@ -15,9 +15,15 @@ test.beforeEach(async ({ page }) => {
     if (await consentButton.isVisible()) {
         await consentButton.click();
     }
+
+    // Dismiss ad popup if it appears
+    const adCloseButton = page.locator('.continue-prompt-text');
+    if (await adCloseButton.isVisible()) {
+        await adCloseButton.click();
+    }
 });
 
-test('verify user can search for a product successfully', async ({ page }) => {
+test('verify user can search for a product successfully @smoke', async ({ page }) => {
 
     const productPage = new ProductPage(page);
     await productPage.navigate();
@@ -29,7 +35,7 @@ test('verify user can search for a product successfully', async ({ page }) => {
 
 });
 
-test('verify user can add product to cart successfully', async ({ page }) => {
+test('verify user can add product to cart successfully @smoke', async ({ page }) => {
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
 
@@ -46,7 +52,7 @@ test('verify user can add product to cart successfully', async ({ page }) => {
 
 });
 
-test('verify user can delete product from cart successfully', async ({ page }) => {
+test('verify user can delete product from cart successfully @regression', async ({ page }) => {
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
 
@@ -54,10 +60,12 @@ test('verify user can delete product from cart successfully', async ({ page }) =
     await productPage.addToCart(1);
     await productPage.continueShopping();
     await productPage.addToCart(2);
+    await productPage.continueShopping();
     await cartPage.navigate();
 
     await cartPage.deleteProduct(1);
-    await page.waitForLoadState('networkidle');
+    await page.locator('[data-product-id="1"]').waitFor({ state: 'detached' });
+    // await page.waitForLoadState('networkidle');
     await expect(page.locator('[data-product-id="1"]')).not.toBeVisible();
     await expect(page.locator('[data-product-id="2"]')).toBeVisible();
 });
