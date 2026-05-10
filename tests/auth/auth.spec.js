@@ -7,6 +7,7 @@ import { SignUpPage } from '../../pages/SignUpPage.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
+  // await this.page.waitForLoadState('networkidle');
 
   // Dismiss cookie consent if it appears
   const consentButton = page.getByRole('button', { name: 'Consent' });
@@ -53,6 +54,10 @@ test('verify duplicate email registration is rejected @regression', async ({ pag
 });
 
 test('verify user can log in successfully @smoke', async ({ page }) => {
+  test.info().annotations.push({ 
+    type: 'description', 
+    description: 'Verifies registered user can login with valid credentials' //Allure description
+  });
   const loginPage = new LoginPage(page);
 
   await loginPage.navigate();
@@ -62,6 +67,7 @@ test('verify user can log in successfully @smoke', async ({ page }) => {
   );
 
   await expect(page.getByText(/Logged in as/)).toBeVisible();
+  await expect(page).toHaveURL('/');
 });
 
 

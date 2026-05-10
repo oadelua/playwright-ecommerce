@@ -1,0 +1,2 @@
+Registered email: user1778398471239@maildrop.cc
+{ responseCode: 201, message: 'User created!' }
