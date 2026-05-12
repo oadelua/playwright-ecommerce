@@ -7,12 +7,16 @@ import { SignUpPage } from '../../pages/SignUpPage.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  // await this.page.waitForLoadState('networkidle');
+  await this.page.waitForLoadState('networkidle');
 
   // Dismiss cookie consent if it appears
   const consentButton = page.getByRole('button', { name: 'Consent' });
-  if (await consentButton.isVisible()) {
+  try {
+    await consentButton.waitFor({ state: 'visible', timeout: 5000 });
     await consentButton.click();
+    await page.waitForLoadState('networkidle');
+  } catch {
+    // No consent popup — continue
   }
 });
 

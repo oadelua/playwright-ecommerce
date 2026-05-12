@@ -6,28 +6,33 @@ import { LoginPage } from '../../pages/LoginPage.js';
 import { createUser, deleteUser } from '../../utils/apiUtils.js';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
 
-  const consentButton = page.getByRole('button', { name: 'Consent' });
-  if (await consentButton.isVisible()) {
-    await consentButton.click();
-  }
+    const consentButton = page.getByRole('button', { name: 'Consent' });
+    try {
+        await consentButton.waitFor({ state: 'visible', timeout: 5000 });
+        await consentButton.click();
+        await page.waitForLoadState('networkidle');
+    } catch {
+        // No consent popup — continue
+    }
 });
 
 test('create user via API then login via UI @smoke', async ({ page, request }) => {
-  // Step 1 — Create user via API
-  const email = `user${Date.now()}@maildrop.cc`;
-  const password = process.env.REGISTER_PASSWORD;
+    // Step 1 — Create user via API
+    const email = `user${Date.now()}@maildrop.cc`;
+    const password = process.env.REGISTER_PASSWORD;
 
-  await createUser(request, email, password);
+    await createUser(request, email, password);
 
-  // Step 2 — Login via UI
-  const loginPage = new LoginPage(page);
-  await loginPage.navigate();
-  await loginPage.login(email, password);
+    // Step 2 — Login via UI
+    const loginPage = new LoginPage(page);
+    await loginPage.navigate();
+    await loginPage.login(email, password);
 
-  await expect(page.getByText(/Logged in as/)).toBeVisible();
+    await expect(page.getByText(/Logged in as/)).toBeVisible();
 
-  // Step 3 — Cleanup via API
-  await deleteUser(request, email, password);
+    // Step 3 — Cleanup via API
+    await deleteUser(request, email, password);
 });
