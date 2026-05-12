@@ -7,7 +7,7 @@ import { SignUpPage } from '../../pages/SignUpPage.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await this.page.waitForLoadState('networkidle');
+  await page.waitForLoadState('networkidle');
 
   // Dismiss cookie consent if it appears
   const consentButton = page.getByRole('button', { name: 'Consent' });
