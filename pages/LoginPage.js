@@ -16,6 +16,6 @@ export class LoginPage {
     await this.loginEmail.fill(email);
     await this.loginPassword.fill(password);
     await this.loginButton.click();
-    await this.page.waitForLoadState('networkidle');
+  
   }
 }

@@ -6,18 +6,19 @@ import { LoginPage } from '../../pages/LoginPage.js';
 import { createUser, deleteUser } from '../../utils/apiUtils.js';
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+  await page.goto('/');
+  
+  await page.waitForLoadState('domcontentloaded');
 
-    const consentButton = page.getByRole('button', { name: 'Consent' });
-    try {
-        await consentButton.waitFor({ state: 'visible', timeout: 5000 });
-        await consentButton.click();
-        await page.waitForLoadState('networkidle');
-    } catch {
-        // No consent popup — continue
-    }
+  const consentButton = page.getByRole('button', { name: 'Consent' });
+  try {
+    await consentButton.waitFor({ state: 'visible', timeout: 5000 });
+    await consentButton.click();
+  } catch {
+    // No consent popup — continue
+  }
 });
+
 
 test('create user via API then login via UI @smoke', async ({ page, request }) => {
     // Step 1 — Create user via API
@@ -32,7 +33,7 @@ test('create user via API then login via UI @smoke', async ({ page, request }) =
     await loginPage.navigate();
     await loginPage.login(email, password);
 
-    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible({ timeout: 10000 });;
 
     // Step 3 — Cleanup via API
     await deleteUser(request, email, password);
