@@ -32,7 +32,7 @@ test('create user via API then login via UI @smoke', async ({ page, request }) =
     await loginPage.navigate();
     await loginPage.login(email, password);
 
-    await expect(page.getByText(/Logged in as/)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
 
     // Step 3 — Cleanup via API
     await deleteUser(request, email, password);
