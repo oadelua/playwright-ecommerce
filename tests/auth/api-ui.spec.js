@@ -23,6 +23,7 @@ test('create user via API then login via UI @smoke', async ({ page, request }) =
     // Step 1 — Create user via API
     const email = `user${Date.now()}@maildrop.cc`;
     const password = process.env.REGISTER_PASSWORD;
+    console.log('Password defined:', !!password);
 
     await createUser(request, email, password);
 
