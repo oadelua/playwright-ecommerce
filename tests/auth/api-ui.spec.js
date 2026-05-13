@@ -21,20 +21,27 @@ test.beforeEach(async ({ page }) => {
 
 
 test('create user via API then login via UI @smoke', async ({ page, request }) => {
-    // Step 1 — Create user via API
-    const email = `user${Date.now()}@maildrop.cc`;
-    const password = process.env.REGISTER_PASSWORD;
-    console.log('Password defined:', !!password);
+  const email = `user${Date.now()}@maildrop.cc`;
+  const password = process.env.REGISTER_PASSWORD;
+  
+  console.log('Password defined:', !!password);
+  console.log('Email:', email);
 
-    await createUser(request, email, password);
+  // Step 1 — Create user via API
+  const createResponse = await createUser(request, email, password);
+  console.log('Create user response:', JSON.stringify(createResponse));
 
-    // Step 2 — Login via UI
-    const loginPage = new LoginPage(page);
-    await loginPage.navigate();
-    await loginPage.login(email, password);
+  // Step 2 — Login via UI
+  const loginPage = new LoginPage(page);
+  await loginPage.navigate();
+  await loginPage.login(email, password);
+  
+  // Check URL after login
+  console.log('URL after login:', page.url());
 
-    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible({ timeout: 10000 });;
+  await expect(page.getByRole('link', { name: 'Logout' }))
+    .toBeVisible({ timeout: 10000 });
 
-    // Step 3 — Cleanup via API
-    await deleteUser(request, email, password);
+  // Step 3 — Cleanup
+  await deleteUser(request, email, password);
 });

@@ -1,0 +1,4 @@
+Password defined: true
+Email: user1778700635027@maildrop.cc
+Create user response: {"responseCode":201,"message":"User created!"}
+URL after login: https://automationexercise.com/
