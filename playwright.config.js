@@ -15,7 +15,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  */
 export default defineConfig({
   testDir: './tests',
-  
+
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -26,23 +26,25 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-  ['html'],
-  ['allure-playwright', { 
-    resultsDir: 'allure-results',
-    environmentInfo: {
-      Browser: 'Chromium',
-      Environment: 'Staging',
-      Application: 'AutomationExercise',
-      BaseURL: 'https://automationexercise.com'
-    }
-  }]
-],
+    ['html'],
+    ['allure-playwright', {
+      resultsDir: 'allure-results',
+      environmentInfo: {
+        Browser: 'Chromium',
+        Environment: 'Staging',
+        Application: 'AutomationExercise',
+        BaseURL: 'https://automationexercise.com'
+      }
+    }]
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
 
     baseURL: 'https://automationexercise.com',
     testIdAttribute: 'data-qa',
     trace: 'on-first-retry',
+    actionTimeout: 10000,      // ← add here
+    navigationTimeout: 30000,
   },
 
   /* Configure projects for major browsers */
@@ -90,6 +92,7 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 
-  
+
+
 });
 

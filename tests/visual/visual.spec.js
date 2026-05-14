@@ -17,7 +17,7 @@ test('homepage visual regression @visual', async ({ page }) => {
 
 test('products page visual regression @visual', async ({ page }) => {
   await page.goto('/products');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded'); // ← change this
   await expect(page.locator('.features_items')).toHaveScreenshot('products-grid.png', {
     mask: [page.locator('iframe')],
     maxDiffPixels: 500
