@@ -1,0 +1,9 @@
+Step 1: Starting test
+Step 2: Password defined: true
+Password length: 13
+Step 3: Creating user via API
+Step 4: Create response: {"responseCode":201,"message":"User created!"}
+Step 5: Navigating to login
+Step 6: Current URL: https://automationexercise.com/login
+Step 7: Logging in
+Step 8: URL after login: https://automationexercise.com/
