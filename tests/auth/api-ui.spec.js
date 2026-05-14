@@ -26,6 +26,7 @@ test('create user via API then login via UI @smoke', async ({ page, request }) =
   const password = process.env.REGISTER_PASSWORD;
   
   console.log('Step 2: Password defined:', !!password);
+  console.log('Password length:', password?.length);
 
   console.log('Step 3: Creating user via API');
   const createResponse = await createUser(request, email, password);
@@ -35,6 +36,7 @@ test('create user via API then login via UI @smoke', async ({ page, request }) =
   const loginPage = new LoginPage(page);
   await loginPage.navigate();
   console.log('Step 6: Current URL:', page.url());
+  
 
   console.log('Step 7: Logging in');
   await loginPage.login(email, password);
